@@ -26,7 +26,7 @@ class User < ActiveRecord::Base
 
   def create_account
   	account = Account.new(email: email)
-  	
+  	account.save
   end
 
 end
