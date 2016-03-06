@@ -1,5 +1,9 @@
 source 'https://rubygems.org'
 
+# Using MailCatcher to check for incoming emails in Development
+# Mailcatcher gem has been installed from command line using gem install mailcatcher
+# Mailcatcher will not entered in the Gemfile
+
 # Devise Gem for authentication
 gem 'devise'
 
