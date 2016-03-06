@@ -9,4 +9,4 @@ if Rails.env.production?
 	  password:             ENV["SENDGRID_PASSWORD"],
 	  authentication:       'plain',
 	  enable_starttls_auto: true  }
-  End
+ end
