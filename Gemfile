@@ -13,6 +13,15 @@ gem 'awesome_print'
 #debugging tool
 gem 'pry-rails'
 
+#Sidekiq for background jobs
+gem 'sidekiq'
+
+#for sending emails in the background
+gem 'devise-async'
+
+#use puma instead of webrick
+gem 'puma'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.4'
 # Use postgresql as the database for Active Record

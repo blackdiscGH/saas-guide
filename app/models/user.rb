@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable, :confirmable
+  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable, :confirmable, :async
 
   validate :email_is_unique, on: :create
   after_create :create_account
@@ -9,8 +9,6 @@ class User < ActiveRecord::Base
   def confirmation_required?
   	true
   end
-
-
 
   private
   
