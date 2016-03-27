@@ -1,5 +1,5 @@
 #Config file for Sidekiq
-:concurreny: 5
+:concurreny: 2
 :queues:
     - [mailer,5]
     - [default,5]
