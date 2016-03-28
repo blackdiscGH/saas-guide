@@ -7,6 +7,9 @@ source 'https://rubygems.org'
 # Devise Gem for authentication
 gem 'devise'
 
+#simple forms
+gem 'simple_form'
+
 #Print ruby objects with color and indentation
 gem 'awesome_print'
 
@@ -30,6 +33,9 @@ gem 'rails', '4.2.4'
 gem 'pg'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
+# bootstrap sass for styling
+gem 'bootstrap-sass', '~> 3.3.6'
+
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
