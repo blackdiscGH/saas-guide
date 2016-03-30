@@ -19,6 +19,9 @@ gem 'pry-rails'
 #Sidekiq for background jobs
 gem 'sidekiq'
 
+#Stripe for payment processing
+gem 'stripe'
+
 #for sending emails in the background
 gem 'devise-async'
 

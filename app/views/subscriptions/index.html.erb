@@ -1,0 +1,21 @@
+<% if @account.stripe_plan_id %>
+	<% if @account.active_until > Time.now %>
+		Your subscription is active until <%= @account.active_until %>
+	<% else %>
+		Your subscription will expired on <%= @account.active_until %>
+	<% end %>
+
+<% else %>
+		You do not have a subscription
+<% end %>	
+
+<br>
+
+
+<%= link_to "Change Subscription", edit_subscription_path(@account.id), {class: "btn btn-primary"} %>
+<br>
+
+<%= link_to "Cancel Subscription", subscriptions_cancel_subscription_path, {class: "btn btn-primary"} %>
+<br>
+<%= link_to "Update Subscription", subscriptions_update_card_path, {class: "btn btn-primary"} %>
+<br>
