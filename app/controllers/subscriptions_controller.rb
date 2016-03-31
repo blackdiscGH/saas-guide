@@ -52,6 +52,9 @@ class SubscriptionsController < ApplicationController
 		# See your keys here https://dashboard.stripe.com/account/apikeys
 		Stripe.api_key = "sk_test_52ACGAHGhXh8elFfA9GQ5xOf"
 
+		logger.debug { "----->ENTERED Subscriptions_controller#create<-----"}
+		
+
 		# Get the credit card details submitted by the form
 		token 			= params[:stripeToken]
 		plan 			= params[:plan][:stripe_id]
@@ -83,6 +86,10 @@ class SubscriptionsController < ApplicationController
 		#get current period end date - This is a unix timestamp
 		current_period_end = @subscribed_plan.current_period_end
 		active_until = Time.at(current_period_end).to_datetime
+		logger.debug { "current_period_end #{current_period_end}" }
+		logger.debug { "active_until #{active_until}" }
+		logger.debug { ".....>EXITED Subscriptions_controller#index<...."}
+
 
 		# Customer create with a valid subscription
 		save_account_details(current_account, plan, @customer.id, active_until)
