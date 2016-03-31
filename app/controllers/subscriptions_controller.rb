@@ -14,6 +14,12 @@ class SubscriptionsController < ApplicationController
 
 	def index
 		@account = Account.find_by_email(current_user.email)
+		logger.debug { "----->ENTERED Subscriptions_controller#index<-----"}
+		logger.debug { "@account #{@account}" }
+		logger.debug { "current_user #{current_user}" }
+		logger.debug { "current_user.email #{current_user.email}" }
+		logger.debug { ".....>EXITED Subscriptions_controller#index<...."}
+
 	end
 
 	def update_card
@@ -21,6 +27,7 @@ class SubscriptionsController < ApplicationController
 
 	def update_card_details
 		# Take the token given and set it on Customer
+		binding.pry 
 		token 			= params[:stripeToken]
 		current_account = Account.find_by_email(current_user.email)
 		customer_id		= current_account.customer_id
@@ -52,6 +59,7 @@ class SubscriptionsController < ApplicationController
 		customer_id 	= current_account.customer_id
 		current_plan 	= current_account.stripe_plan_id
 
+
 		if customer_id.nil?
 			#new customer
 			# Create a Customer
@@ -62,6 +70,7 @@ class SubscriptionsController < ApplicationController
 			)
 		subscriptions = @customer.subscriptions
 		@subscribed_plan = subscriptions.data.find {|o| o.plan.id == plan}
+
 		else
 			#Customer Exists
 			#Get Customer object from Stripe
