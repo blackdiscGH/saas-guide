@@ -2,31 +2,31 @@ class SubscriptionsController < ApplicationController
 
 	before_action :authenticate_user!
 
-	def new
-		@plans = Plan.all
-	end
-
-	def edit
-		@account = Account.find(params[:id])
-		@plans = Plan.all	
-	end 
-
-
 	def index
 		@account = Account.find_by_email(current_user.email)
-		logger.debug { "----->ENTERED Subscriptions_controller#index<-----"}
+		logger.debug { "----->ENTERED Subscriptions_controller# INDEX"}
 		logger.debug { "@account #{@account}" }
 		logger.debug { "@account.active_until #{@account.active_until}" }
 		logger.debug { "current_user #{current_user}" }
 		logger.debug { "current_user.email #{current_user.email}" }
-		logger.debug { ".....>EXITED Subscriptions_controller#index<...."}
+		logger.debug { "EXITED Subscriptions_controller# INDEX----->"}
 
 	end
 
+	def edit
+		logger.debug { "----->ENTERED Subscriptions_controller# EDIT"}
+		@account = Account.find(params[:id])
+		@plans = Plan.all	
+		logger.debug { "EXITED Subscriptions_controller# EDIT----->"}
+	end 
+
 	def update_card
+		logger.debug { "----->ENTERED Subscriptions_controller# UPDATE CARD"}
+		logger.debug { "EXITED Subscriptions_controller# UPDATE CARD----->"}
 	end
 
 	def update_card_details
+		logger.debug { "----->ENTERED Subscriptions_controller# UPDATE CARD DETAILS"}
 		# Take the token given and set it on Customer
 		binding.pry 
 		token 			= params[:stripeToken]
@@ -44,13 +44,19 @@ class SubscriptionsController < ApplicationController
 
 	rescue => e
 		redirect_to action: "update_card", flash: {error: e.message}
+
+	logger.debug { "EXITED Subscriptions_controller# UPDATE CARD DETAILS----->"}
 	end
 
 
 	def create
+		logger.debug { "----->ENTERED Subscriptions_controller# CREATE"}
 		# Set your secret key: remember to change this to your live secret key in production
 		# See your keys here https://dashboard.stripe.com/account/apikeys
 		Stripe.api_key = "sk_test_52ACGAHGhXh8elFfA9GQ5xOf"
+
+		logger.debug { "----->ENTERED Subscriptions_controller#create<-----"}
+		
 
 		# Get the credit card details submitted by the form
 		token 			= params[:stripeToken]
@@ -63,7 +69,7 @@ class SubscriptionsController < ApplicationController
 
 		if customer_id.nil?
 			#new customer
-			# Create a Customer
+			# Create a STRIPE Customer Object
 			@customer = Stripe::Customer.create(
 		  		:source => token,
 		  		:plan => plan,
@@ -73,7 +79,7 @@ class SubscriptionsController < ApplicationController
 		@subscribed_plan = subscriptions.data.find {|o| o.plan.id == plan}
 
 		else
-			#Customer Exists
+			#Customer Exists on Stripe
 			#Get Customer object from Stripe
 			@customer  		 =Stripe::Customer.retrieve(customer_id)
 			#Get current subscription if any
@@ -83,6 +89,10 @@ class SubscriptionsController < ApplicationController
 		#get current period end date - This is a unix timestamp
 		current_period_end = @subscribed_plan.current_period_end
 		active_until = Time.at(current_period_end).to_datetime
+		logger.debug { "current_period_end #{current_period_end}" }
+		logger.debug { "active_until #{active_until}" }
+		logger.debug { ".....>EXITED Subscriptions_controller#index<...."}
+
 
 		# Customer create with a valid subscription
 		save_account_details(current_account, plan, @customer.id, active_until)
@@ -90,9 +100,14 @@ class SubscriptionsController < ApplicationController
 
 		rescue => e
 			redirect_to :back, flash: {error: e.message}
-
-	
 	end
+
+	def new
+		logger.debug { "----->ENTERED Subscriptions_controller# NEW"}
+		@plans = Plan.all
+		logger.debug { "EXITED Subscriptions_controller# NEW----->"}
+	end
+
 
 	def cancel_subscription
 		binding.pry
