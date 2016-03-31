@@ -16,6 +16,7 @@ class SubscriptionsController < ApplicationController
 		@account = Account.find_by_email(current_user.email)
 		logger.debug { "----->ENTERED Subscriptions_controller#index<-----"}
 		logger.debug { "@account #{@account}" }
+		logger.debug { "@account.active_until #{@account.active_until}" }
 		logger.debug { "current_user #{current_user}" }
 		logger.debug { "current_user.email #{current_user.email}" }
 		logger.debug { ".....>EXITED Subscriptions_controller#index<...."}
