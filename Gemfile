@@ -38,6 +38,8 @@ gem 'pg'
 gem 'sass-rails', '~> 5.0'
 # bootstrap sass for styling
 gem 'bootstrap-sass', '~> 3.3.6'
+#It is also recommended to use Autoprefixer with Bootstrap to add browser vendor prefixes automatically. Simply add the gem:
+gem 'autoprefixer-rails'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'

@@ -63,7 +63,11 @@ class SubscriptionsController < ApplicationController
 		plan 			= params[:plan][:stripe_id]
 		email 			= current_user.email
 		current_account = Account.find_by_email(current_user.email)
+		logger.debug {"Value of current_account: #{current_account}"}
+
 		customer_id 	= current_account.customer_id
+		logger.debug {"Value of customer_id: #{customer_id}"}
+
 		current_plan 	= current_account.stripe_plan_id
 
 
@@ -112,7 +116,7 @@ class SubscriptionsController < ApplicationController
 
 
 	def cancel_subscription
-		binding.pry
+		
 		email 			= current_user.email
 		current_account = Account.find_by_email(current_user.email)
 		customer_id 	= current_account.customer_id
@@ -122,25 +126,27 @@ class SubscriptionsController < ApplicationController
 			raise "No plan found to be unsubscribed/cancelled"
 		end
 
-
-		#Fetch customer from stripe
+		#1. Fetch customer from stripe
 		customer = Stripe::Customer.retrieve(customer_id)
-		#Get current subscription from Stripe
+
+		#2. Get current subscription from Stripe
 		subscriptions = customer.subscriptions
-		#Retrieve the subscription that you want to delete
+
+		#3. Retrieve the subscription that you want to delete
 		current_subscribed_plan = subscriptions.data.find {|o| o.plan.id == current_plan}
 		if current_subscribed_plan.blank?
 			raise "Subscription not found"
 		end
-		#Delete it
+
+		#4. Delete it
 		current_subscribed_plan.delete 
 
-		#Update the Account model
+		#5. Update the Local Account model
 		save_account_details(current_account,"",customer_id, Time.at(0).to_datetime)
 		@message = "Subscription cancelled successfully"
 	
 		rescue => e
-			redirect_to "/subscriptions", flash: {error: e.message}
+			redirect_to "/subscriptions", flash: {error: "Error cancelling subscription" + e.message}
 	end
 
 

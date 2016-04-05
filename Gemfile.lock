@@ -208,6 +208,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  autoprefixer-rails
   awesome_print
   bootstrap-sass (~> 3.3.6)
   byebug
