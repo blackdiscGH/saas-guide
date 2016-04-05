@@ -70,6 +70,7 @@ class SubscriptionsController < ApplicationController
 		if customer_id.nil?
 			#new customer
 			# Create a STRIPE Customer Object
+			logger.debug { "customer_id is nil !!!"}
 			@customer = Stripe::Customer.create(
 		  		:source => token,
 		  		:plan => plan,
@@ -79,6 +80,7 @@ class SubscriptionsController < ApplicationController
 		@subscribed_plan = subscriptions.data.find {|o| o.plan.id == plan}
 
 		else
+			logger.debug { "customer_id is NOT nil !!!"}
 			#Customer Exists on Stripe
 			#Get Customer object from Stripe
 			@customer  		 =Stripe::Customer.retrieve(customer_id)
@@ -91,11 +93,11 @@ class SubscriptionsController < ApplicationController
 		active_until = Time.at(current_period_end).to_datetime
 		logger.debug { "current_period_end #{current_period_end}" }
 		logger.debug { "active_until #{active_until}" }
-		logger.debug { ".....>EXITED Subscriptions_controller#index<...."}
-
-
+		
 		# Customer create with a valid subscription
 		save_account_details(current_account, plan, @customer.id, active_until)
+
+		logger.debug { "EXITED Subscriptions_controller# CREATE----->"}
 		redirect_to :root, notice: "Successfully subsribed to a plan"
 
 		rescue => e
@@ -143,11 +145,13 @@ class SubscriptionsController < ApplicationController
 
 
 	def save_account_details(account, plan, customer_id, active_until)
+		logger.debug { "----->ENTERED save_account_details"}
 		# Update the Account model with details
 		account.stripe_plan_id 	= plan
 		account.active_until 	= active_until
 		account.customer_id 	= customer_id
 		account.save
+		logger.debug { "EXITED save_account_details ----->"}
 	end
 
 
